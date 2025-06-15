@@ -1,45 +1,50 @@
-let currentIndex = 0;
+// ===========================
+// main.js — handles both quizzes
+// ===========================
+
 let currentQuiz = [];
+let currentIndex = 0;
 let scores = {};
 
-// Make startQuiz globally accessible for the HTML onclick
-window.startQuiz = function(type) {
+const allLanguages = [
+  "Words of Affirmation",
+  "Acts of Service",
+  "Quality Time",
+  "Physical Touch",
+  "Receiving Gifts"
+];
+
+function startQuiz(type) {
+  currentQuiz = type === "receiving" ? receivingQuiz : givingQuiz;
   currentIndex = 0;
-  scores = {
-    "Words of Affirmation": 0,
-    "Acts of Service": 0,
-    "Quality Time": 0,
-    "Physical Touch": 0,
-    "Receiving Gifts": 0
-  };
+  scores = {};
+  allLanguages.forEach(lang => scores[lang] = 0);
 
-  currentQuiz = type === 'receiving' ? receivingQuiz : givingQuiz;
-
-  // Show quiz UI
   document.getElementById("start-screen").style.display = "none";
-  document.getElementById("question-container").style.display = "block";
   document.getElementById("result-container").innerHTML = "";
-
+  document.getElementById("restart-button").style.display = "none";
+  document.getElementById("question-container").style.display = "block";
   loadQuestion();
-};
+}
 
 function loadQuestion() {
   const container = document.getElementById("question-container");
   container.innerHTML = "";
 
   if (currentIndex >= currentQuiz.length) {
-    return showResults();
+    showResults();
+    return;
   }
 
   const q = currentQuiz[currentIndex];
-
-  const questionEl = document.createElement("p");
-  questionEl.textContent = q.question;
-  container.appendChild(questionEl);
+  const qEl = document.createElement("h2");
+  qEl.textContent = `Q${currentIndex + 1}: ${q.question}`;
+  container.appendChild(qEl);
 
   q.options.forEach(opt => {
     const btn = document.createElement("button");
     btn.textContent = opt.text;
+    btn.className = "quiz-button";
     btn.onclick = () => {
       scores[opt.language]++;
       currentIndex++;
@@ -50,41 +55,32 @@ function loadQuestion() {
 }
 
 function showResults() {
-  const container = document.getElementById("question-container");
-  container.style.display = "none";
-
+  document.getElementById("question-container").style.display = "none";
   const resultContainer = document.getElementById("result-container");
+
   const total = Object.values(scores).reduce((a, b) => a + b, 0);
   const percentages = {};
-
   for (let lang in scores) {
     percentages[lang] = Math.round((scores[lang] / total) * 100);
   }
 
-  resultContainer.innerHTML = "<h2>Your Love Language Breakdown:</h2>";
+  let output = "<h2>Your Love Language Breakdown:</h2><ul>";
   for (let lang in percentages) {
-    resultContainer.innerHTML += `<p>${lang}: ${percentages[lang]}%</p>`;
+    output += `<li><strong>${lang}</strong>: ${percentages[lang]}%</li>`;
   }
-  // 👇 Show restart button
-    document.getElementById("restart-button").style.display = "inline-block";
-  }
+  output += "</ul>";
+  resultContainer.innerHTML = output;
 
-window.restartQuiz = function () {
-  currentIndex = 0;
-  currentQuiz = [];
+  document.getElementById("restart-button").style.display = "inline-block";
+}
 
-  // Reset scores
-  scores = {
-    "Words of Affirmation": 0,
-    "Acts of Service": 0,
-    "Quality Time": 0,
-    "Physical Touch": 0,
-    "Receiving Gifts": 0
-  };
-
-  // Reset UI
+function restartQuiz() {
   document.getElementById("start-screen").style.display = "block";
   document.getElementById("question-container").style.display = "none";
   document.getElementById("result-container").innerHTML = "";
   document.getElementById("restart-button").style.display = "none";
-};
+  currentIndex = 0;
+  currentQuiz = [];
+  scores = {};
+  allLanguages.forEach(lang => scores[lang] = 0);
+}
