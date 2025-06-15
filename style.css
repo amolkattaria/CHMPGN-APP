@@ -98,6 +98,11 @@ button:hover {
   border-bottom: 1px solid #eee;
 }
 
+#result-container h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
 #restart-button {
   margin-top: 30px;
   padding: 12px 28px;
