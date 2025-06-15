@@ -1,9 +1,9 @@
 let currentQuiz = [];
 let currentIndex = 0;
 let scores = {};
-let quizType = "";  // Track which quiz is active
+let quizType = "";
 
-const allLanguages = [
+const languageTraits = [
   "Words of Affirmation",
   "Acts of Service",
   "Quality Time",
@@ -11,13 +11,28 @@ const allLanguages = [
   "Receiving Gifts"
 ];
 
-function startQuiz(type) {
-  quizType = type;  // Save quiz type for results display
-  currentQuiz = type === "receiving" ? receivingQuiz : givingQuiz;
-  currentIndex = 0;
-  scores = {};
-  allLanguages.forEach(lang => scores[lang] = 0);
+const oceanTraits = [
+  "Openness",
+  "Conscientiousness",
+  "Extraversion",
+  "Agreeableness",
+  "Neuroticism"
+];
 
+function startQuiz(type) {
+  quizType = type;
+  if (type === "receiving") {
+    currentQuiz = receivingQuiz;
+    scores = Object.fromEntries(languageTraits.map(t => [t, 0]));
+  } else if (type === "giving") {
+    currentQuiz = givingQuiz;
+    scores = Object.fromEntries(languageTraits.map(t => [t, 0]));
+  } else if (type === "ocean") {
+    currentQuiz = oceanQuiz;
+    scores = Object.fromEntries(oceanTraits.map(t => [t, 0]));
+  }
+
+  currentIndex = 0;
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("result-container").innerHTML = "";
   document.getElementById("restart-button").style.display = "none";
@@ -44,7 +59,8 @@ function loadQuestion() {
     btn.textContent = opt.text;
     btn.className = "quiz-button";
     btn.onclick = () => {
-      scores[opt.language]++;
+      const trait = opt.language || opt.trait;
+      scores[trait]++;
       currentIndex++;
       loadQuestion();
     };
@@ -58,15 +74,19 @@ function showResults() {
 
   const total = Object.values(scores).reduce((a, b) => a + b, 0);
   const percentages = {};
-  for (let lang in scores) {
-    percentages[lang] = Math.round((scores[lang] / total) * 100);
+  for (let key in scores) {
+    percentages[key] = Math.round((scores[key] / total) * 100);
   }
 
-  const quizLabel = quizType === "receiving" ? "Receiving Quiz" : "Giving Quiz";
+  const label = quizType === "receiving"
+    ? "Receiving Quiz"
+    : quizType === "giving"
+    ? "Giving Quiz"
+    : "OCEAN Personality Quiz";
 
-  let output = `<h2>Your ${quizLabel} Results:</h2><ul>`;
-  for (let lang in percentages) {
-    output += `<li><strong>${lang}</strong>: ${percentages[lang]}%</li>`;
+  let output = `<h2>Your ${label} Results:</h2><ul>`;
+  for (let trait in percentages) {
+    output += `<li><strong>${trait}</strong>: ${percentages[trait]}%</li>`;
   }
   output += "</ul>";
 
@@ -82,6 +102,5 @@ function restartQuiz() {
   currentIndex = 0;
   currentQuiz = [];
   scores = {};
-  allLanguages.forEach(lang => scores[lang] = 0);
   quizType = "";
 }
