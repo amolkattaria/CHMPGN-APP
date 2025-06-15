@@ -1,10 +1,7 @@
-// ===========================
-// main.js — handles both quizzes
-// ===========================
-
 let currentQuiz = [];
 let currentIndex = 0;
 let scores = {};
+let quizType = "";  // Track which quiz is active
 
 const allLanguages = [
   "Words of Affirmation",
@@ -15,6 +12,7 @@ const allLanguages = [
 ];
 
 function startQuiz(type) {
+  quizType = type;  // Save quiz type for results display
   currentQuiz = type === "receiving" ? receivingQuiz : givingQuiz;
   currentIndex = 0;
   scores = {};
@@ -64,13 +62,15 @@ function showResults() {
     percentages[lang] = Math.round((scores[lang] / total) * 100);
   }
 
-  let output = "<h2>Your Love Language Breakdown:</h2><ul>";
+  const quizLabel = quizType === "receiving" ? "Receiving Quiz" : "Giving Quiz";
+
+  let output = `<h2>Your ${quizLabel} Results:</h2><ul>`;
   for (let lang in percentages) {
     output += `<li><strong>${lang}</strong>: ${percentages[lang]}%</li>`;
   }
   output += "</ul>";
-  resultContainer.innerHTML = output;
 
+  resultContainer.innerHTML = output;
   document.getElementById("restart-button").style.display = "inline-block";
 }
 
@@ -83,4 +83,5 @@ function restartQuiz() {
   currentQuiz = [];
   scores = {};
   allLanguages.forEach(lang => scores[lang] = 0);
+  quizType = "";
 }
