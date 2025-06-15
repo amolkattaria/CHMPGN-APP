@@ -1,0 +1,22 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 2em;
+  background-color: #fff8f0;
+  color: #333;
+}
+
+#question-container {
+  margin-top: 1em;
+}
+
+button {
+  margin: 0.5em 0;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+#result-container {
+  margin-top: 2em;
+  font-weight: bold;
+}
