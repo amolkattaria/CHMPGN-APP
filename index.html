@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SYMMETRY Love Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>SYMMETRY Love Language Quiz</h1>
+
+  <div id="start-screen">
+    <p>What kind of quiz would you like to take?</p>
+    <button onclick="startQuiz('receiving')">Receiving Love</button>
+    <button onclick="startQuiz('giving')">Giving Love</button>
+  </div>
+
+  <div id="question-container" style="display: none;"></div>
+  <div id="result-container"></div>
+
+  <button id="restart-button" style="display: none;" onclick="restartQuiz()">Restart Quiz</button>
+
+  <script src="receiving.js"></script>
+  <script src="giving.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
