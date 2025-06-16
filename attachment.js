@@ -153,47 +153,4 @@ const attachmentQuiz = [
     ]
   }
 ];
-
-let currentAttachmentIndex = 0;
-let attachmentScores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
-
-function loadAttachmentQuestion() {
-  const q = attachmentQuiz[currentAttachmentIndex];
-  document.getElementById("quiz-question").innerText = q.question;
-  const answerButtons = document.getElementById("answer-buttons");
-  answerButtons.innerHTML = "";
-  q.options.forEach((option) => {
-    const btn = document.createElement("button");
-    btn.innerText = option.text;
-    btn.classList.add("answer-button");
-    btn.addEventListener("click", () => selectAttachmentAnswer(option.scores));
-    answerButtons.appendChild(btn);
-  });
-}
-
-function selectAttachmentAnswer(scoreObj) {
-  Object.entries(scoreObj).forEach(([style, score]) => {
-    attachmentScores[style] += score;
-  });
-  currentAttachmentIndex++;
-  if (currentAttachmentIndex < attachmentQuiz.length) {
-    loadAttachmentQuestion();
-  } else {
-    showAttachmentResults();
-  }
-}
-
-function showAttachmentResults() {
-  const total = Object.values(attachmentScores).reduce((a, b) => a + b, 0);
-  const results = Object.entries(attachmentScores).map(([style, score]) => {
-    const pct = total > 0 ? Math.round((score / total) * 100) : 0;
-    return `${style.charAt(0).toUpperCase() + style.slice(1)}: ${pct}%`;
-  }).join("<br>");
-  document.getElementById("quiz-container").innerHTML = "<h2>Your Attachment Style</h2><p>" + results + "</p>";
-}
-
-function startAttachmentQuiz() {
-  currentAttachmentIndex = 0;
-  attachmentScores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
-  loadAttachmentQuestion();
-}
+=
