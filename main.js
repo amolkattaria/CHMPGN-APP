@@ -140,7 +140,7 @@ function restartQuiz() {
   }
 }
 
-// Optional: define wrapper functions for compatibility with older button formats
+// Wrapper functions to support older button onclicks
 function startGivingQuiz() {
   startQuiz("giving");
 }
