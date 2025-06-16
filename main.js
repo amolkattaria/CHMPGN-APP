@@ -146,3 +146,19 @@ function restartQuiz() {
   scores = {};
   quizType = "";
 }
+
+function startGivingQuiz() {
+  startQuiz("giving");
+}
+
+function startReceivingQuiz() {
+  startQuiz("receiving");
+}
+
+function startOceanQuiz() {
+  startQuiz("ocean");
+}
+
+function startAttachmentQuiz() {
+  startQuiz("attachment");
+}
