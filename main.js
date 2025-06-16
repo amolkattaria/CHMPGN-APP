@@ -108,22 +108,23 @@ function showResults() {
     percentages[key] = total > 0 ? Math.round((scores[key] / total) * 100) : 0;
   }
 
-  let label = "";
-  switch (quizType) {
-    case "receiving":
-      label = "Receiving Quiz";
-      break;
-    case "giving":
-      label = "Giving Quiz";
-      break;
-    case "ocean":
-      label = "OCEAN Personality Quiz";
-      break;
-    case "attachment":
-      label = "Attachment Style Quiz";
-      break;
-    default:
-      label = "Quiz";
+ let label = "";
+switch (quizType) {
+  case "receiving":
+    label = "Receiving Quiz";
+    break;
+  case "giving":
+    label = "Giving Quiz";
+    break;
+  case "ocean":
+    label = "OCEAN Personality Quiz";
+    break;
+  case "attachment":
+    label = "Attachment Style Quiz";
+    break;
+  default:
+    label = "Quiz";
+}
   }
 
   let output = `<h2>Your ${label} Results:</h2><ul>`;
