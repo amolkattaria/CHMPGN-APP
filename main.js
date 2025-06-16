@@ -19,6 +19,23 @@ const oceanTraits = [
   "Neuroticism"
 ];
 
+// Your existing receivingQuiz, givingQuiz, oceanQuiz must be defined elsewhere.
+
+// Define your attachmentQuiz variable (short example, replace with full 15 Qs)
+const attachmentQuiz = [
+  {
+    question: "I find it easy to get close to others and I'm comfortable depending on them.",
+    options: [
+      { text: "Strongly Agree", scores: { secure: 2 } },
+      { text: "Agree", scores: { secure: 1 } },
+      { text: "Neutral", scores: {} },
+      { text: "Disagree", scores: { avoidant: 1 } },
+      { text: "Strongly Disagree", scores: { avoidant: 2 } }
+    ]
+  },
+  // ... add remaining 14 questions ...
+];
+
 function startQuiz(type) {
   quizType = type;
   if (type === "receiving") {
@@ -30,6 +47,12 @@ function startQuiz(type) {
   } else if (type === "ocean") {
     currentQuiz = oceanQuiz;
     scores = Object.fromEntries(oceanTraits.map(t => [t, 0]));
+  } else if (type === "attachment") {
+    currentQuiz = attachmentQuiz;
+    scores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
+  } else {
+    alert("Unknown quiz type: " + type);
+    return;
   }
 
   currentIndex = 0;
@@ -59,8 +82,15 @@ function loadQuestion() {
     btn.textContent = opt.text;
     btn.className = "quiz-button";
     btn.onclick = () => {
-      const trait = opt.language || opt.trait;
-      scores[trait]++;
+      if (quizType === "attachment") {
+        // Weighted scoring for attachment style
+        Object.entries(opt.scores).forEach(([style, score]) => {
+          scores[style] += score;
+        });
+      } else {
+        const trait = opt.language || opt.trait;
+        scores[trait]++;
+      }
       currentIndex++;
       loadQuestion();
     };
@@ -75,14 +105,26 @@ function showResults() {
   const total = Object.values(scores).reduce((a, b) => a + b, 0);
   const percentages = {};
   for (let key in scores) {
-    percentages[key] = Math.round((scores[key] / total) * 100);
+    percentages[key] = total > 0 ? Math.round((scores[key] / total) * 100) : 0;
   }
 
-  const label = quizType === "receiving"
-    ? "Receiving Quiz"
-    : quizType === "giving"
-    ? "Giving Quiz"
-    : "OCEAN Personality Quiz";
+  let label = "";
+  switch (quizType) {
+    case "receiving":
+      label = "Receiving Quiz";
+      break;
+    case "giving":
+      label = "Giving Quiz";
+      break;
+    case "ocean":
+      label = "OCEAN Personality Quiz";
+      break;
+    case "attachment":
+      label = "Attachment Style Quiz";
+      break;
+    default:
+      label = "Quiz";
+  }
 
   let output = `<h2>Your ${label} Results:</h2><ul>`;
   for (let trait in percentages) {
