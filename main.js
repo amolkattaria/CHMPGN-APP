@@ -140,16 +140,3 @@ function restartQuiz() {
   }
 }
 
-// Wrapper functions to support older button onclicks
-function startGivingQuiz() {
-  startQuiz("giving");
-}
-function startReceivingQuiz() {
-  startQuiz("receiving");
-}
-function startOceanQuiz() {
-  startQuiz("ocean");
-}
-function startAttachmentQuiz() {
-  startQuiz("attachment");
-}
