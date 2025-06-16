@@ -67,12 +67,25 @@ function loadQuestion() {
     btn.className = "quiz-button";
     btn.onclick = () => {
       if (quizType === "attachment") {
-        Object.entries(opt.scores).forEach(([style, score]) => {
-          scores[style] += score;
-        });
+        if (opt.scores && typeof opt.scores === "object") {
+          Object.entries(opt.scores).forEach(([style, score]) => {
+            if (!scores.hasOwnProperty(style)) {
+              scores[style] = 0; // Defensive init in case
+            }
+            scores[style] += score;
+          });
+          console.log("Selected attachment scores:", opt.scores);
+          console.log("Updated cumulative attachment scores:", scores);
+        } else {
+          console.warn("Option missing scores object:", opt);
+        }
       } else {
         const trait = opt.language || opt.trait;
-        scores[trait]++;
+        if (trait) {
+          scores[trait]++;
+        } else {
+          console.warn("Option missing trait or language property:", opt);
+        }
       }
       currentIndex++;
       loadQuestion();
