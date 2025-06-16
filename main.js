@@ -32,11 +32,12 @@ function startQuiz(type) {
     currentQuiz = oceanQuiz;
     scores = Object.fromEntries(oceanTraits.map(t => [t, 0]));
   } else if (type === "attachment") {
-    currentQuiz = attachmentQuiz; 
-    scores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
-  } else {
-    alert("Unknown quiz type: " + type);
-    return;
+  currentQuiz = attachmentQuiz; 
+  scores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
+} else {
+  alert("Unknown quiz type: " + type);
+  return;
+}
   }
 
   currentIndex = 0;
