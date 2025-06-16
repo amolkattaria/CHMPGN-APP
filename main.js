@@ -19,25 +19,9 @@ const oceanTraits = [
   "Neuroticism"
 ];
 
-// Your existing receivingQuiz, givingQuiz, oceanQuiz must be defined elsewhere.
-
-// Define your attachmentQuiz variable (short example, replace with full 15 Qs)
-const attachmentQuiz = [
-  {
-    question: "I find it easy to get close to others and I'm comfortable depending on them.",
-    options: [
-      { text: "Strongly Agree", scores: { secure: 2 } },
-      { text: "Agree", scores: { secure: 1 } },
-      { text: "Neutral", scores: {} },
-      { text: "Disagree", scores: { avoidant: 1 } },
-      { text: "Strongly Disagree", scores: { avoidant: 2 } }
-    ]
-  },
-  // ... add remaining 14 questions ...
-];
-
 function startQuiz(type) {
   quizType = type;
+
   if (type === "receiving") {
     currentQuiz = receivingQuiz;
     scores = Object.fromEntries(languageTraits.map(t => [t, 0]));
@@ -83,7 +67,6 @@ function loadQuestion() {
     btn.className = "quiz-button";
     btn.onclick = () => {
       if (quizType === "attachment") {
-        // Weighted scoring for attachment style
         Object.entries(opt.scores).forEach(([style, score]) => {
           scores[style] += score;
         });
@@ -108,23 +91,22 @@ function showResults() {
     percentages[key] = total > 0 ? Math.round((scores[key] / total) * 100) : 0;
   }
 
- let label = "";
-switch (quizType) {
-  case "receiving":
-    label = "Receiving Quiz";
-    break;
-  case "giving":
-    label = "Giving Quiz";
-    break;
-  case "ocean":
-    label = "OCEAN Personality Quiz";
-    break;
-  case "attachment":
-    label = "Attachment Style Quiz";
-    break;
-  default:
-    label = "Quiz";
-}
+  let label = "";
+  switch (quizType) {
+    case "receiving":
+      label = "Receiving Quiz";
+      break;
+    case "giving":
+      label = "Giving Quiz";
+      break;
+    case "ocean":
+      label = "OCEAN Personality Quiz";
+      break;
+    case "attachment":
+      label = "Attachment Style Quiz";
+      break;
+    default:
+      label = "Quiz";
   }
 
   let output = `<h2>Your ${label} Results:</h2><ul>`;
@@ -138,28 +120,36 @@ switch (quizType) {
 }
 
 function restartQuiz() {
-  document.getElementById("start-screen").style.display = "block";
-  document.getElementById("question-container").style.display = "none";
-  document.getElementById("result-container").innerHTML = "";
-  document.getElementById("restart-button").style.display = "none";
-  currentIndex = 0;
-  currentQuiz = [];
-  scores = {};
-  quizType = "";
+  const startScreen = document.getElementById("start-screen");
+  const questionContainer = document.getElementById("question-container");
+  const resultContainer = document.getElementById("result-container");
+  const restartBtn = document.getElementById("restart-button");
+
+  if (startScreen && questionContainer && resultContainer && restartBtn) {
+    startScreen.style.display = "block";
+    questionContainer.style.display = "none";
+    resultContainer.innerHTML = "";
+    restartBtn.style.display = "none";
+
+    currentIndex = 0;
+    currentQuiz = [];
+    scores = {};
+    quizType = "";
+  } else {
+    console.error("restartQuiz error: some required DOM elements not found.");
+  }
 }
 
+// Optional: define wrapper functions for compatibility with older button formats
 function startGivingQuiz() {
   startQuiz("giving");
 }
-
 function startReceivingQuiz() {
   startQuiz("receiving");
 }
-
 function startOceanQuiz() {
   startQuiz("ocean");
 }
-
 function startAttachmentQuiz() {
   startQuiz("attachment");
 }
