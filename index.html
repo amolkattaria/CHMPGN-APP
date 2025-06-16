@@ -7,19 +7,26 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="main-menu">
+
+  <!-- Start Screen -->
+  <div id="start-screen">
     <h1>The CHMPGN App</h1>
-    <button onclick="startReceivingQuiz()">Start Love Language (Receiving)</button>
-    <button onclick="startGivingQuiz()">Start Love Language (Giving)</button>
-    <button onclick="startOceanQuiz()">Start OCEAN Quiz</button>
-    <button onclick="startAttachmentQuiz()">Start Attachment Style Quiz</button>
+    <button onclick="startQuiz('receiving')">Start Love Language (Receiving)</button>
+    <button onclick="startQuiz('giving')">Start Love Language (Giving)</button>
+    <button onclick="startQuiz('ocean')">Start OCEAN Quiz</button>
+    <button onclick="startQuiz('attachment')">Start Attachment Style Quiz</button>
   </div>
 
-  <div id="quiz-container">
-    <h2 id="quiz-question">Press a button above to begin</h2>
-    <div id="answer-buttons"></div>
-  </div>
+  <!-- Quiz Container -->
+  <div id="question-container" style="display: none;"></div>
 
+  <!-- Results -->
+  <div id="result-container"></div>
+
+  <!-- Restart Button -->
+  <button id="restart-button" onclick="restartQuiz()" style="display: none;">Restart Quiz</button>
+
+  <!-- Scripts -->
   <script src="receiving.js"></script>
   <script src="giving.js"></script>
   <script src="ocean.js"></script>
