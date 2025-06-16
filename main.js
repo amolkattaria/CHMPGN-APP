@@ -35,7 +35,7 @@ function startQuiz(type) {
     currentQuiz = attachmentQuiz;
     scores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
   } else {
-    alert("Unknown quiz type: " + type);
+  alert("Unknown quiz type: " + type);
     return;
   }
 
